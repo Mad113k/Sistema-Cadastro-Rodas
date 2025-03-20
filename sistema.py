@@ -39,18 +39,17 @@ def fazer_login():
     else:
         messagebox.showerror("Erro", "Usuário ou senha inválidos")
 
-# Tela Principal com Menu Profissional
+# Tela Principal
 def tela_principal():
     app = tk.Tk()
-    app.title("Sistema de Cadastro de Rodas")
-    app.geometry("1200x700")
+    app.title("Design Rodas")
+    app.state('zoomed')  # Mantém maximizado com minimizar e maximizar
+
     app.configure(bg="#f0f0f0")
 
-    # Frame de Menu
     frame_menu = tk.Frame(app, bg="#ececec", height=150)
     frame_menu.pack(fill='x')
 
-    # Área de conteúdo
     frame_conteudo = tk.Frame(app, bg="#ffffff")
     frame_conteudo.pack(fill='both', expand=True)
 
@@ -58,7 +57,6 @@ def tela_principal():
         for widget in frame_conteudo.winfo_children():
             widget.destroy()
 
-    # Funções das Abas
     def abrir_cadastro():
         limpar_frame()
         tk.Label(frame_conteudo, text="Cadastro de Rodas", font=("Arial", 16), bg="#ffffff").pack(pady=10)
@@ -87,8 +85,7 @@ def tela_principal():
                 INSERT INTO rodas (nome, aro, preco, quantidade) VALUES (?, ?, ?, ?)
             ''', (nome_entry.get(), int(aro_entry.get()), float(preco_entry.get()), int(quantidade_entry.get())))
             conn.commit()
-
-            novo_id = cursor.lastrowid  # Captura o ID da roda cadastrada
+            novo_id = cursor.lastrowid
             messagebox.showinfo("Sucesso", f"Roda cadastrada com sucesso!\nID da roda: {novo_id}")
 
         tk.Button(frame_conteudo, text="Cadastrar", bg="#4CAF50", fg="white", command=cadastrar_roda).pack(pady=10)
@@ -203,27 +200,28 @@ def tela_principal():
     tk.Button(frame_menu, text="Registrar Entrada", width=20, height=5, bg="#8BC34A", fg="white", command=lambda: abrir_movimentacao("entrada")).pack(side="left", padx=10)
     tk.Button(frame_menu, text="Registrar Saída", width=20, height=5, bg="#E53935", fg="white", command=lambda: abrir_movimentacao("saida")).pack(side="left", padx=10)
     tk.Button(frame_menu, text="Movimentações", width=20, height=5, bg="#FFC107", fg="black", command=abrir_movimentacoes).pack(side="left", padx=10)
-    
-    # Botão de Sair
     tk.Button(frame_menu, text="Sair", width=20, height=5, bg="#FF5722", fg="white", command=app.quit).pack(side="left", padx=10, pady=20)
 
     app.mainloop()
 
 # Tela de Login
 login = tk.Tk()
-login.title("Login - Sistema de Rodas")
-login.geometry("400x250")
-login.configure(bg="#ececec")
+login.title("Login - Design Rodas")
+login.state('zoomed')  # Mantém a tela maximizada com minimizar/maximizar
 
-tk.Label(login, text="Usuário:", font=("Arial", 12), bg="#ececec").pack(pady=10)
-entrada_user = tk.Entry(login, font=("Arial", 12))
+# Frame centralizado
+frame_login = tk.Frame(login, bg="#ececec")
+frame_login.place(relx=0.5, rely=0.5, anchor="center")
+
+tk.Label(frame_login, text="Usuário:", font=("Arial", 14), bg="#ececec").pack(pady=10)
+entrada_user = tk.Entry(frame_login, font=("Arial", 14))
 entrada_user.pack()
 
-tk.Label(login, text="Senha:", font=("Arial", 12), bg="#ececec").pack(pady=10)
-entrada_senha = tk.Entry(login, show="*", font=("Arial", 12))
+tk.Label(frame_login, text="Senha:", font=("Arial", 14), bg="#ececec").pack(pady=10)
+entrada_senha = tk.Entry(frame_login, show="*", font=("Arial", 14))
 entrada_senha.pack()
 
-btn_login = tk.Button(login, text="Entrar", command=fazer_login, bg="#4CAF50", fg="white", font=("Arial", 12))
+btn_login = tk.Button(frame_login, text="Entrar", command=fazer_login, bg="#4CAF50", fg="white", font=("Arial", 14))
 btn_login.pack(pady=20)
 
 login.mainloop()
